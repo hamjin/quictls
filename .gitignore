@@ -226,3 +226,7 @@ doc-nits
 # LSP (Language Server Protocol) support
 .cache/
 compile_commands.json
+
+# nginx build dir
+.openssl/
+*.tmp
