@@ -112,6 +112,7 @@ if (NOT OPENSSL_NO_CHACHA)
     if (NOT OPENSSL_NO_POLY1305)
         target_sources(defprov PRIVATE
             cipher_chacha20_poly1305.c cipher_chacha20_poly1305_hw.c
+            cipher_chacha20_d_poly1305.c cipher_chacha20_d_poly1305_hw.c
             )
     endif ()
 endif ()

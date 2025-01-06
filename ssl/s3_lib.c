@@ -1935,6 +1935,54 @@ static SSL_CIPHER ssl3_ciphers[] = {
      },
     {
      1,
+     TLS1_TXT_DHE_RSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_RFC_DHE_RSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_CK_DHE_RSA_WITH_CHACHA20_POLY1305_D,
+     SSL_kDHE,
+     SSL_aRSA,
+     SSL_CHACHA20POLY1305_D,
+     SSL_AEAD,
+     TLS1_2_VERSION, TLS1_2_VERSION,
+     DTLS1_2_VERSION, DTLS1_2_VERSION,
+     SSL_HIGH,
+     SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+     256,
+     256,
+    },
+    {
+     1,
+     TLS1_TXT_ECDHE_RSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_RFC_ECDHE_RSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_CK_ECDHE_RSA_WITH_CHACHA20_POLY1305_D,
+     SSL_kECDHE,
+     SSL_aRSA,
+     SSL_CHACHA20POLY1305_D,
+     SSL_AEAD,
+     TLS1_2_VERSION, TLS1_2_VERSION,
+     DTLS1_2_VERSION, DTLS1_2_VERSION,
+     SSL_HIGH,
+     SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+     256,
+     256,
+     },
+    {
+     1,
+     TLS1_TXT_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_RFC_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_D,
+     TLS1_CK_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_D,
+     SSL_kECDHE,
+     SSL_aECDSA,
+     SSL_CHACHA20POLY1305_D,
+     SSL_AEAD,
+     TLS1_2_VERSION, TLS1_2_VERSION,
+     DTLS1_2_VERSION, DTLS1_2_VERSION,
+     SSL_HIGH,
+     SSL_HANDSHAKE_MAC_SHA256 | TLS1_PRF_SHA256,
+     256,
+     256,
+    },
+    {
+     1,
      TLS1_TXT_PSK_WITH_CHACHA20_POLY1305,
      TLS1_RFC_PSK_WITH_CHACHA20_POLY1305,
      TLS1_CK_PSK_WITH_CHACHA20_POLY1305,
@@ -3980,13 +4028,13 @@ const SSL_CIPHER *ssl3_choose_cipher(SSL_CONNECTION *s, STACK_OF(SSL_CIPHER) *cl
            temporarily prioritize all ChaCha20 ciphers in the servers list. */
         if (s->options & SSL_OP_PRIORITIZE_CHACHA && sk_SSL_CIPHER_num(clnt) > 0) {
             c = sk_SSL_CIPHER_value(clnt, 0);
-            if (c->algorithm_enc == SSL_CHACHA20POLY1305) {
+            if (c->algorithm_enc & SSL_CHACHA20) {
                 /* ChaCha20 is client preferred, check server... */
                 int num = sk_SSL_CIPHER_num(srvr);
                 int found = 0;
                 for (i = 0; i < num; i++) {
                     c = sk_SSL_CIPHER_value(srvr, i);
-                    if (c->algorithm_enc == SSL_CHACHA20POLY1305) {
+                    if (c->algorithm_enc & SSL_CHACHA20) {
                         found = 1;
                         break;
                     }
@@ -3999,13 +4047,13 @@ const SSL_CIPHER *ssl3_choose_cipher(SSL_CONNECTION *s, STACK_OF(SSL_CIPHER) *cl
                         sk_SSL_CIPHER_push(prio_chacha, c);
                         for (i++; i < num; i++) {
                             c = sk_SSL_CIPHER_value(srvr, i);
-                            if (c->algorithm_enc == SSL_CHACHA20POLY1305)
+                            if (c->algorithm_enc & SSL_CHACHA20)
                                 sk_SSL_CIPHER_push(prio_chacha, c);
                         }
                         /* Pull in the rest */
                         for (i = 0; i < num; i++) {
                             c = sk_SSL_CIPHER_value(srvr, i);
-                            if (c->algorithm_enc != SSL_CHACHA20POLY1305)
+                            if (!(c->algorithm_enc & SSL_CHACHA20))
                                 sk_SSL_CIPHER_push(prio_chacha, c);
                         }
                         prio = prio_chacha;

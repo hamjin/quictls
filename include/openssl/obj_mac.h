@@ -5289,6 +5289,10 @@
 #define LN_chacha20_poly1305            "chacha20-poly1305"
 #define NID_chacha20_poly1305           1018
 
+#define SN_chacha20_poly1305_draft              "ChaCha20-Poly1305-D"
+#define LN_chacha20_poly1305_draft              "chacha20-poly1305-draft"
+#define NID_chacha20_poly1305_draft             1321
+
 #define SN_chacha20             "ChaCha20"
 #define LN_chacha20             "chacha20"
 #define NID_chacha20            1019

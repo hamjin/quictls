@@ -239,6 +239,7 @@ extern const OSSL_DISPATCH ossl_rc4_hmac_ossl_md5_functions[];
 extern const OSSL_DISPATCH ossl_chacha20_functions[];
 # ifndef OPENSSL_NO_POLY1305
 extern const OSSL_DISPATCH ossl_chacha20_ossl_poly1305_functions[];
+extern const OSSL_DISPATCH ossl_chacha20_d_ossl_poly1305_functions[];
 # endif /* OPENSSL_NO_POLY1305 */
 #endif /* OPENSSL_NO_CHACHA */
 

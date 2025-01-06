@@ -311,6 +311,7 @@ static const OSSL_ALGORITHM_CAPABLE deflt_ciphers[] = {
     ALG(PROV_NAMES_ChaCha20, ossl_chacha20_functions),
 # ifndef OPENSSL_NO_POLY1305
     ALG(PROV_NAMES_ChaCha20_Poly1305, ossl_chacha20_ossl_poly1305_functions),
+    ALG(PROV_NAMES_ChaCha20_Poly1305_D, ossl_chacha20_d_ossl_poly1305_functions),
 # endif /* OPENSSL_NO_POLY1305 */
 #endif /* OPENSSL_NO_CHACHA */
     { { NULL, NULL, NULL }, NULL }

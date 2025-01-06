@@ -1123,6 +1123,7 @@ const EVP_CIPHER *EVP_camellia_256_ctr(void);
 const EVP_CIPHER *EVP_chacha20(void);
 #  ifndef OPENSSL_NO_POLY1305
 const EVP_CIPHER *EVP_chacha20_poly1305(void);
+const EVP_CIPHER *EVP_chacha20_poly1305_draft(void);
 #  endif
 # endif
 

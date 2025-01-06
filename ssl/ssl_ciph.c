@@ -55,6 +55,7 @@ static const ssl_cipher_table ssl_cipher_table_cipher[SSL_ENC_NUM_IDX] = {
     {SSL_ARIA256GCM, NID_aria_256_gcm}, /* SSL_ENC_ARIA256GCM_IDX 21 */
     {SSL_MAGMA, NID_magma_ctr_acpkm}, /* SSL_ENC_MAGMA_IDX */
     {SSL_KUZNYECHIK, NID_kuznyechik_ctr_acpkm}, /* SSL_ENC_KUZNYECHIK_IDX */
+    {SSL_CHACHA20POLY1305_D, NID_chacha20_poly1305_draft}, /* SSL_ENC_CHACHA20_D_IDX 24 */
 };
 
 #define SSL_COMP_NULL_IDX       0
@@ -239,6 +240,7 @@ static const SSL_CIPHER cipher_aliases[] = {
     {0, SSL_TXT_CAMELLIA256, NULL, 0, 0, 0, SSL_CAMELLIA256},
     {0, SSL_TXT_CAMELLIA, NULL, 0, 0, 0, SSL_CAMELLIA},
     {0, SSL_TXT_CHACHA20, NULL, 0, 0, 0, SSL_CHACHA20},
+    {0, SSL_TXT_CHACHA20_D, NULL, 0, 0, 0, SSL_CHACHA20POLY1305_D},
     {0, SSL_TXT_GOST2012_GOST8912_GOST8912, NULL, 0, 0, 0, SSL_eGOST2814789CNT12},
 
     {0, SSL_TXT_ARIA, NULL, 0, 0, 0, SSL_ARIA},
@@ -1821,6 +1823,9 @@ char *SSL_CIPHER_description(const SSL_CIPHER *cipher, char *buf, int len)
     case SSL_CHACHA20POLY1305:
         enc = "CHACHA20/POLY1305(256)";
         break;
+    case SSL_CHACHA20POLY1305_D:
+        enc = "CHACHA20/POLY1305-Draft(256)";
+        break;
     default:
         enc = "unknown";
         break;
@@ -2147,7 +2152,7 @@ int ssl_cipher_get_overhead(const SSL_CIPHER *c, size_t *mac_overhead,
         out = EVP_CCM_TLS_EXPLICIT_IV_LEN + 16;
     } else if (c->algorithm_enc & (SSL_AES128CCM8 | SSL_AES256CCM8)) {
         out = EVP_CCM_TLS_EXPLICIT_IV_LEN + 8;
-    } else if (c->algorithm_enc & SSL_CHACHA20POLY1305) {
+    } else if (c->algorithm_enc & (SSL_CHACHA20POLY1305 | SSL_CHACHA20POLY1305_D)) {
         out = 16;
     } else if (c->algorithm_mac & SSL_AEAD) {
         /* We're supposed to have handled all the AEAD modes above */
