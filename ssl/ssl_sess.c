@@ -106,8 +106,8 @@ SSL_SESSION *SSL_SESSION_new(void)
         return NULL;
 
     ss->verify_result = 1;      /* avoid 0 (= X509_V_OK) just in case */
-   /* 5 minute timeout by default */
-    ss->timeout = ossl_seconds2time(60 * 5 + 4);
+   /* 2 days timeout by default */
+    ss->timeout = ossl_seconds2time(60 * 60 * 24 * 2);
     ss->time = ossl_time_now();
     ssl_session_calculate_timeout(ss);
     if (!CRYPTO_NEW_REF(&ss->references, 1)) {
